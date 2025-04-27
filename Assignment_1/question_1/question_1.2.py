@@ -1,5 +1,5 @@
 from collections import deque
-
+from graph_conversion import graph
 class Search:
     def __init__(self, graph):
         self.graph = graph
@@ -49,18 +49,3 @@ class Search:
             return self.dfs(start_node, goal_node)
         else:
             raise ValueError("Method must be 'bfs' or 'dfs'")
-
-
-ethipian_search_graph = {
-    'Addis Ababa': ['Debre Zeit', 'Ambo'],
-    'Debre Zeit': ['Addis Ababa', 'Adama'],
-    'Ambo': ['Addis Ababa', 'Nekemte'],
-    'Adama': ['Debre Zeit', 'Assela'],
-    'Assela': ['Adama'],
-    'Nekemte': ['Ambo']
-}
-
-problem = Search(ethipian_search_graph)
-
-print("BFS Path: ", problem.search('Adama', 'Nekemte', method='bfs'))
-print("DFS Path: ", problem.search('Adama', 'Nekemte', method='dfs'))
