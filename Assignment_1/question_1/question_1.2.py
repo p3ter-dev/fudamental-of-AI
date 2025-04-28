@@ -1,3 +1,6 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
 from collections import deque
 from graph_conversion import graph
 class Search:
@@ -37,7 +40,21 @@ class Search:
                         paths_to_explore.append(new_path)
         return None
 
+G = nx.Graph()
 
+for node, edges in graph.items():
+    for neighbor in edges:
+        G.add_edge(node, neighbor)
+
+plt.figure(figsize=(15, 15))
+pos = nx.spring_layout(G, seed=42)
+nx.draw_networkx_nodes(G, pos, node_size=300, node_color='skyblue')
+nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.7, edge_color='gray')
+nx.draw_networkx_labels(G, pos, font_size=10, font_color='black')
+
+plt.title('Graph of Ethiopian Cities based on the given graph')
+plt.axis('off')
+plt.show()
 searcher = Search(graph)
 
 print(searcher.search('Addis Ababa', 'Moyale', strategy='bfs'))
