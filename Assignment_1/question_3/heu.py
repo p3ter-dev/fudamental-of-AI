@@ -17,8 +17,10 @@ class AstarSearch:
         visited = set()
 
         while priority_queue:
-            _, g, current_node, path = heapq.heappop(priority_queue)
-            
+            popped_item = heapq.heappop(priority_queue)
+            g = popped_item[1]
+            current_node = popped_item[2]           
+            path = popped_item[3]             
             if current_node in visited:
                 continue
                 
@@ -28,12 +30,9 @@ class AstarSearch:
                 return path, g
             
             for neighbor, cost in self.graph.get(current_node, []):
-                if neighbor not in self.heuristic:
-                    print(f"Warning: Heuristic not found for node {neighbor} - using 0")
-                    heuristic_value = 0
-                else:
-                    heuristic_value = self.heuristic[neighbor]
-                    
+                if neighbor in visited:
+                    continue
+                heuristic_value = self.heuristic.get(neighbor, float('inf'))
                 new_g = g + cost
                 if neighbor not in cost_so_far or new_g < cost_so_far[neighbor]:
                     cost_so_far[neighbor] = new_g
