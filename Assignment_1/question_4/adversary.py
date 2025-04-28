@@ -37,5 +37,5 @@ class MiniMaxAgent:
         return best_move, value
 
 agent = MiniMaxAgent(graph, utilities)
-best_city, best_value = agent.find_best_path()
+best_city, best_value = agent.find_best_path('Addis Ababa', 3)
 print(f"Best move is to go to {best_city} with utility {best_value}")
