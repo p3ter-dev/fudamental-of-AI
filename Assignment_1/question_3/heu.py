@@ -1,4 +1,6 @@
 import heapq
+import matplotlib.pyplot as plt
+import networkx as nx
 from graph import graph
 from heuristic_values import heuristics
 class AstarSearch:
@@ -41,7 +43,33 @@ class AstarSearch:
         
         return None, float('inf')
 
+G = nx.Graph()
 
+for node, neighbors in graph.items():
+    if node in heuristics:
+        G.add_node(node, heuristics=heuristics[node])
+
+for node1, neighbors in graph.items():
+    for node2, cost in neighbors:
+        G.add_edge(node1, node2, weight=cost)
+
+plt.figure(figsize=(15, 15))
+pos = nx.spring_layout(G, seed=42)
+nx.draw_networkx_nodes(G, pos, node_size=300, node_color='skyblue')
+nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.7, edge_color='gray')
+nx.draw_networkx_labels(G, pos, font_size=10, font_color='black')
+
+edge_labels = nx.get_edge_attributes(G, 'weight')
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+
+node_labels = nx.get_node_attributes(G, 'heuristics')
+for node, label in node_labels.items():
+    x, y = pos[node]
+    plt.text(x, y + 0.05, str(label), fontsize=10, ha='center', color='red')
+
+plt.title('Graph of Ethiopian Cities with Heuristics and Edge Costs')
+plt.axis('off')
+plt.show()
 a_star = AstarSearch(graph, heuristics)
 path, cost = a_star.search("Addis Ababa", "Moyale")
 print("Optimal Path:", " → ".join(path))
