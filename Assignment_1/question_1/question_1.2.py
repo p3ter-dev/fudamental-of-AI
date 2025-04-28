@@ -7,19 +7,21 @@ class Search:
     def search(self, start, goal, strategy='bfs'):
         if strategy not in ('bfs', 'dfs'):
             raise ValueError("Strategy must be either 'bfs' or 'dfs'.")
+        
+        print(f"Searching from {start} to {goal} using {strategy.upper()} strategy.")
 
         if strategy == 'bfs':
-            frontier = deque([[start]])
+            paths_to_explore = deque([[start]])
         else:
-            frontier = [[start]]
+            paths_to_explore = [[start]]
 
         explored = set()
 
-        while frontier:
+        while paths_to_explore:
             if strategy == 'bfs':
-                path = frontier.popleft()
+                path = paths_to_explore.popleft()
             else:
-                path = frontier.pop()
+                path = paths_to_explore.pop()
 
             current_node = path[-1]
 
@@ -32,7 +34,7 @@ class Search:
                 for neighbor in self.graph.get(current_node, []):
                     if neighbor not in explored:
                         new_path = path + [neighbor]
-                        frontier.append(new_path)
+                        paths_to_explore.append(new_path)
         return None
 
 
