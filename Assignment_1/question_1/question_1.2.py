@@ -3,49 +3,41 @@ from graph_conversion import graph
 class Search:
     def __init__(self, graph):
         self.graph = graph
-    
-    def bfs(self, start_node, goal_node):
-        visited = set()
-        queue = deque([start_node])
 
-        while queue:
-            path = queue.popleft()
-            city = path[-1]
+    def search(self, start, goal, strategy='bfs'):
+        if strategy not in ('bfs', 'dfs'):
+            raise ValueError("Strategy must be either 'bfs' or 'dfs'.")
 
-            if city == goal_node:
-                return path
-            
-            if city not in visited:
-                visited.add(city)
-                for neighbor in self.graph.get(city, []):
-                    new_path = list(path)
-                    new_path.append(neighbor)
-                    queue.append(new_path)
-        return None
-    
-    def dfs(self, start_node, goal_node):
-        visited = set()
-        stack = [[start_node]]
-
-        while stack:
-            path = stack.pop()
-            city = path[-1]
-
-            if city == goal_node:
-                return path
-            
-            if city not in visited:
-                visited.add(city)
-                for neighbor in self.graph.get(city, []):
-                    new_path = list(path)
-                    new_path.append(neighbor)
-                    stack.append(new_path)
-        return None
-    
-    def search(self, start_node, goal_node, method='bfs'):
-        if method == 'bfs':
-            return self.bfs(start_node, goal_node)
-        elif method == 'dfs':
-            return self.dfs(start_node, goal_node)
+        if strategy == 'bfs':
+            frontier = deque([[start]])
         else:
-            raise ValueError("Method must be 'bfs' or 'dfs'")
+            frontier = [[start]]
+
+        explored = set()
+
+        while frontier:
+            if strategy == 'bfs':
+                path = frontier.popleft()
+            else:
+                path = frontier.pop()
+
+            current_node = path[-1]
+
+            if current_node == goal:
+                return path
+
+            if current_node not in explored:
+                explored.add(current_node)
+
+                for neighbor in self.graph.get(current_node, []):
+                    if neighbor not in explored:
+                        new_path = path + [neighbor]
+                        frontier.append(new_path)
+        return None
+
+
+searcher = Search(graph)
+
+print(searcher.search('Addis Ababa', 'Moyale', strategy='bfs'))
+
+print(searcher.search('Addis Ababa', 'Moyale', strategy='dfs'))
