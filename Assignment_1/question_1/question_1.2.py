@@ -52,7 +52,7 @@ nx.draw_networkx_nodes(G, pos, node_size=300, node_color='skyblue')
 nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.7, edge_color='gray')
 nx.draw_networkx_labels(G, pos, font_size=10, font_color='black')
 
-plt.title('Graph of Ethiopian Cities based on the given graph')
+plt.title('Graph of Ethiopian Cities based on the bfs and dfs search')
 plt.axis('off')
 plt.show()
 searcher = Search(graph)
