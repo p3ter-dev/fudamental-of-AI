@@ -1,3 +1,6 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
 from graph import graph
 from utilities import utilities
 class MiniMaxAgent:
@@ -35,6 +38,22 @@ class MiniMaxAgent:
     def find_best_path(self, start, max_depth):
         value, best_move = self.minimax(start, max_depth, True)
         return best_move, value
+
+
+def plot_graph(graph):
+    G = nx.DiGraph()
+    
+    for node, neighbors in graph.items():
+        for neighbor in neighbors:
+            G.add_edge(node, neighbor)
+
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_size=2000, node_color="lightblue", font_size=10, font_weight="bold", arrows=True)
+    
+    plt.title("Graph Visualization in adversarial search")
+    plt.show()
+
+plot_graph(graph)
 
 agent = MiniMaxAgent(graph, utilities)
 best_city, best_value = agent.find_best_path('Addis Ababa', 3)
